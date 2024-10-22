@@ -1,0 +1,50 @@
+﻿using FormBuilder.Core.Extensions;
+using FormBuilder.Core.Models;
+using FormBuilder.Core.Repository;
+using FormBuilder.Dtos;
+
+namespace FormBuilder.Core
+{
+    public class FormService : IFormService
+    {
+        private readonly IFormRepository _formRepository;
+
+        public FormService(IFormRepository formRepository)
+        {
+            _formRepository = formRepository;
+        }
+
+        public async Task<int> CreateFormTemplateAsync(CreateFormTemplateDto formTemplateDto)
+        {
+            var formTemplate = Helpers.MapDtoToDomain(formTemplateDto);
+            await _formRepository.AddFormTemplateAsync(formTemplate);
+            return formTemplate.Id;
+        }
+
+        public async Task<FormTemplate?> GetFormTemplateByIdAsync(int id)
+        {
+            return await _formRepository.GetFormTemplateByIdAsync(id);
+        }
+
+        public async Task<FormInstanceDto> GenerateFormInstanceAsync(int templateId, Dictionary<string, double> userFieldValues)
+        {
+            var formTemplate = await _formRepository.GetFormTemplateByIdAsync(templateId);
+            if (formTemplate == null) return null;
+
+            var formInstance = new FormInstanceDto
+            {
+                TemplateName = formTemplate.TemplateName,
+                FieldValues = formTemplate.Fields.ToDictionary(
+                    field => field.Name,
+                    field => formTemplate.GetFieldValue(userFieldValues, field.Name)
+                )
+            };
+
+            return formInstance;
+        }
+        public static double? GetFieldValue(FormTemplate formTemplate, Dictionary<string, double> userFieldValues, string fieldName)
+        {
+            return formTemplate.GetFieldValue(userFieldValues, fieldName);
+        }
+    }
+}
