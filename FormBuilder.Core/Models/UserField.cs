@@ -6,13 +6,14 @@ namespace FormBuilder.Core.Models
         public UserField(string name)
             : base(name, FieldType.UserField, DataType.Numeric) { }
 
-        public double? GetValue(Dictionary<string, double> userFieldValues)
+        public override double? GetValue(Dictionary<string, double> userFieldValues)
         {
-            if (!userFieldValues.TryGetValue(Name, out var value))
+            if (!userFieldValues.ContainsKey(Name))
             {
-                throw new KeyNotFoundException($"User field '{Name}' not provided.");
+                throw new KeyNotFoundException($"User field '{Name}' is missing.");
             }
-            return value;
+
+            return userFieldValues[Name];
         }
     }
 }

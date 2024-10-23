@@ -11,7 +11,8 @@ namespace FormBuilder.Core.Module
         public static void AddCoreModule(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<FormContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
+    x => x.MigrationsAssembly("FormBuilder.Core")));
 
             services.AddScoped<IFormService, FormService>();
             services.AddScoped<IFormRepository, FormRepository>();

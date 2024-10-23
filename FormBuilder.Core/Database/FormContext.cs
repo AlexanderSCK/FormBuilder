@@ -8,6 +8,8 @@ namespace FormBuilder.Core.Database
         public DbSet<FormTemplate> FormTemplates { get; set; }
         public DbSet<Field> Fields { get; set; }
 
+        public FormContext(DbContextOptions<FormContext> options) : base(options) { }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Field>()

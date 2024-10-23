@@ -4,28 +4,37 @@ namespace FormBuilder.Core.Models
 {
     public class CalculatedField : Field
     {
-        public string Formula { get; private set; }
+        public List<string> DependentFieldNames { get; set; } 
 
-        public CalculatedField(string name, string formula)
+        public CalculatedField(string name, List<string> dependentFieldNames)
             : base(name, FieldType.CalculatedField, DataType.Numeric)
         {
-            Formula = formula;
+            DependentFieldNames = dependentFieldNames;
         }
 
-        public double? GetValue(Dictionary<string, double> userFieldValues)
+        public override double? GetValue(Dictionary<string, double> userFieldValues, Dictionary<string, double?> calculatedFieldValues)
         {
-            // Create an instance of the NCalc expression parser
-            NCalc.Expression expression = new NCalc.Expression(Formula);
+            double sum = 0;
 
-            // Set the user field values as parameters in the expression
-            foreach (var field in userFieldValues)
+            foreach (var fieldName in DependentFieldNames)
             {
-                expression.Parameters[field.Key] = field.Value;
+                if (userFieldValues.ContainsKey(fieldName))
+                {
+                    sum += userFieldValues[fieldName];
+                }
+                else if (calculatedFieldValues.ContainsKey(fieldName) && calculatedFieldValues[fieldName].HasValue)
+                {
+                    sum += calculatedFieldValues[fieldName].Value;
+                }
+                else
+                {
+                    throw new ArgumentException($"Dependent field '{fieldName}' is missing from both user and calculated values.");
+                }
             }
 
-            // Evaluate the expression and return the result as double
-            var result = expression.Evaluate();
-            return Convert.ToDouble(result);
+            calculatedFieldValues[Name] = sum;
+
+            return sum;
         }
     }
 }

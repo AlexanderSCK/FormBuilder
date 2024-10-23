@@ -19,24 +19,25 @@ namespace FormBuilder.Core.Models
 
         public double? GetFieldValue(Dictionary<string, double> userFieldValues, string fieldName)
         {
-            var field = Fields.FirstOrDefault(f => f.Name == fieldName);
+            if (string.IsNullOrWhiteSpace(fieldName))
+                throw new ArgumentException("Field name cannot be null or whitespace.", nameof(fieldName));
 
+            var field = Fields.FirstOrDefault(f => f.Name == fieldName);
             if (field == null)
             {
-                throw new ArgumentException($"Field '{fieldName}' does not exist in the form template.");
+                throw new KeyNotFoundException($"Field '{fieldName}' does not exist in the form template.");
             }
 
-            if (field.DataType != DataType.Numeric)
+            if (field is CalculatedField)
             {
-                throw new InvalidOperationException($"Field '{fieldName}' is not of numeric type.");
+                var calculatedFieldValues = new Dictionary<string, double?>();
+                
+                return field.GetValue(userFieldValues, calculatedFieldValues);
             }
-
-            return field.Type switch
+            else
             {
-                FieldType.UserField => ((UserField)field).GetValue(userFieldValues),
-                FieldType.CalculatedField => ((CalculatedField)field).GetValue(userFieldValues),
-                _ => throw new InvalidOperationException($"Unsupported field type '{field.Type}'.")
-            };
+                return field.GetValue(userFieldValues);
+            }
         }
     }
 }

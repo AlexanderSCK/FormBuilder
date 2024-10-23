@@ -1,5 +1,6 @@
 ﻿using FormBuilder.Core.Models;
 using FormBuilder.Dtos;
+using System.Linq;
 
 namespace FormBuilder.Core.Extensions
 {
@@ -7,22 +8,27 @@ namespace FormBuilder.Core.Extensions
     {
         public static FormTemplate MapDtoToDomain(this CreateFormTemplateDto formTemplateDto)
         {
-            var fields = formTemplateDto.Fields.Select(f =>
-            {
-                if (f.Type == FieldType.UserField)
-                {
-                    return new UserField(f.Name);
-                }
-                else if (f.Type == FieldType.CalculatedField)
-                {
-                    if (string.IsNullOrWhiteSpace(f.Formula))
-                        throw new ArgumentException($"Calculated field '{f.Name}' must have a formula.");
+            if (formTemplateDto == null)
+                throw new ArgumentNullException(nameof(formTemplateDto));
 
-                    return new CalculatedField(f.Name, f.Formula) as Field;
-                }
-                else
+            if (formTemplateDto.Fields == null || !formTemplateDto.Fields.Any())
+                throw new ArgumentException("Form template must contain at least one field.");
+
+            var fields = formTemplateDto.Fields.Select<CreateFieldDto, Field>(f =>
+            {
+                switch (f.Type)
                 {
-                    throw new InvalidOperationException($"Unsupported field type '{f.Type}' for field '{f.Name}'.");
+                    case FieldType.UserField:
+                        return new UserField(f.Name);
+
+                    case FieldType.CalculatedField:
+                        if (f.DependentFieldNames == null || !f.DependentFieldNames.Any())
+                            throw new ArgumentException($"Calculated field '{f.Name}' must have at least one dependent field.");
+
+                        return new CalculatedField(f.Name, f.DependentFieldNames);
+
+                    default:
+                        throw new InvalidOperationException($"Unsupported field type '{f.Type}' for field '{f.Name}'.");
                 }
             }).ToList();
 

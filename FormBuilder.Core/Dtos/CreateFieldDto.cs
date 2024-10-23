@@ -6,6 +6,6 @@ namespace FormBuilder.Dtos
     {
         public string Name { get; set; }
         public FieldType Type { get; set; }
-        public string Formula { get; set; }
+        public List<string>? DependentFieldNames { get; set; }
     }
 }
