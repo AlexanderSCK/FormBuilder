@@ -24,7 +24,7 @@ namespace FormBuilder.Core.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<FormTemplate?> GetFormTemplateByIdAsync(int id)
+        public async Task<FormTemplate?> GetFormTemplateByIdAsync(Guid id)
         {
             return await _context.FormTemplates
                          .Include(t => t.Fields)

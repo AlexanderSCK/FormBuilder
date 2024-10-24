@@ -5,7 +5,7 @@ namespace FormBuilder.Core.Models
     public class FormTemplate
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string TemplateName { get; set; }
         public List<Field> Fields { get; set; }
 
@@ -13,6 +13,7 @@ namespace FormBuilder.Core.Models
 
         public FormTemplate(string templateName, List<Field> fields)
         {
+            Id = Guid.NewGuid();
             TemplateName = templateName;
             Fields = fields;
         }

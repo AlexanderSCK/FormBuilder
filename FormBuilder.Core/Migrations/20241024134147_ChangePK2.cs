@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FormBuilder.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class ChangePK2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,7 +41,7 @@ namespace FormBuilder.Core.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
                     FieldType = table.Column<int>(type: "integer", nullable: false), // Removed DataType
-                    FormTemplateId = table.Column<string>(type: "text", nullable: true), // Adjusted to string
+                    FormTemplateId = table.Column<Guid>(type: "uuid", nullable: true), // Adjusted to string
                     DependentFieldNames = table.Column<string[]>(type: "text[]", nullable: true)
                 },
                 constraints: table =>

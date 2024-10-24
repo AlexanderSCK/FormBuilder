@@ -1,5 +1,4 @@
 ﻿using FormBuilder.Dtos;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using System.Net.Http.Json;
 using System.Net;
 using FormBuilder.Core.Models;
@@ -102,7 +101,8 @@ namespace FormBuilder.Tests
         public async Task GetFormTemplate_ShouldReturnNotFound_WhenInvalidId()
         {
             // Act
-            var response = await _client.GetAsync("/api/FormTemplate/9999");
+            var id = Guid.NewGuid();
+            var response = await _client.GetAsync($"/api/FormTemplate/{id}");
 
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
@@ -146,7 +146,8 @@ namespace FormBuilder.Tests
         public async Task GenerateFormInstance_ShouldReturnNotFound_WhenInvalidId()
         {
             // Act
-            var response = await _client.PostAsJsonAsync("/api/FormTemplate/9999/generate", new Dictionary<string, double>());
+            var id = Guid.NewGuid();
+            var response = await _client.PostAsJsonAsync($"/api/FormTemplate/{id}/generate", new Dictionary<string, double>());
 
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));

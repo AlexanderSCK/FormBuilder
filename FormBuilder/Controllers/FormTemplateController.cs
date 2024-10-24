@@ -29,7 +29,7 @@ namespace FormBuilder.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetFormTemplate(int id)
+        public async Task<IActionResult> GetFormTemplate(Guid id)
         {
             var formTemplate = await _formService.GetFormTemplateByIdAsync(id);
             if (formTemplate == null)
@@ -41,7 +41,7 @@ namespace FormBuilder.Controllers
         }
 
         [HttpPost("{id}/generate")]
-        public async Task<IActionResult> GenerateFormInstance(int id, [FromBody] Dictionary<string, double> userFieldValues)
+        public async Task<IActionResult> GenerateFormInstance(Guid id, [FromBody] Dictionary<string, double> userFieldValues)
         {
             var formInstance = await _formService.GenerateFormInstanceAsync(id, userFieldValues);
             if (formInstance == null)

@@ -14,22 +14,25 @@ namespace FormBuilder.Core
             _formRepository = formRepository;
         }
 
-        public async Task<int> CreateFormTemplateAsync(CreateFormTemplateDto formTemplateDto)
+        public async Task<Guid> CreateFormTemplateAsync(CreateFormTemplateDto formTemplateDto)
         {
             var formTemplate = Helpers.MapDtoToDomain(formTemplateDto);
             await _formRepository.AddFormTemplateAsync(formTemplate);
             return formTemplate.Id;
         }
 
-        public async Task<FormTemplate?> GetFormTemplateByIdAsync(int id)
+        public async Task<FormTemplate?> GetFormTemplateByIdAsync(Guid id)
         {
             return await _formRepository.GetFormTemplateByIdAsync(id);
         }
 
-        public async Task<FormInstanceDto> GenerateFormInstanceAsync(int templateId, Dictionary<string, double> userFieldValues)
+        public async Task<FormInstanceDto> GenerateFormInstanceAsync(Guid templateId, Dictionary<string, double> userFieldValues)
         {
             var formTemplate = await _formRepository.GetFormTemplateByIdAsync(templateId);
-            if (formTemplate == null) return null;
+            if (formTemplate == null)
+            {
+                return null;
+            }
 
             var formInstance = new FormInstanceDto
             {

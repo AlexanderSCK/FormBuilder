@@ -11,6 +11,7 @@ namespace FormBuilder.Core.Models
         public string Name { get; set; }
         public FieldType Type { get; set; }
 
+        public Guid FormTemplateId { get; set; }
         protected Field(string name, FieldType type)
         {
             Name = name;
