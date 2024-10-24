@@ -36,13 +36,14 @@ Leveraging Postgre database deployed in AWS
     }
   ]
 }
-
+```
 
 - **Endpoint**: GET /api/FromTemplate/{f8a4cebf-94d0-4af9-a6df-dbdd95b02745}
 - **Description**: Retrieves a specific form template by its ID.
 - **Headers**:
   - `Content-Type`: application/json
 
+```json
 - **Response** (sample):
 {
   "id": "f8a4cebf-94d0-4af9-a6df-dbdd95b02745",
@@ -68,6 +69,7 @@ Leveraging Postgre database deployed in AWS
     }
   ]
 }
+```
 
 - **Endpoint**: POST /api/FromTemplate/{f8a4cebf-94d0-4af9-a6df-dbdd95b02745}/generate
 - **Description**: Generates a form instance based on template and the provided values.
@@ -91,4 +93,4 @@ Leveraging Postgre database deployed in AWS
     "Tax": 2
   }
 }
-
+```
