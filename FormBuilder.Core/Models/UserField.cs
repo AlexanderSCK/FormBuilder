@@ -4,7 +4,7 @@ namespace FormBuilder.Core.Models
     public class UserField : Field
     {
         public UserField(string name)
-            : base(name, FieldType.UserField, DataType.Numeric) { }
+            : base(name, FieldType.UserField) { }
 
         public override double? GetValue(Dictionary<string, double> userFieldValues)
         {

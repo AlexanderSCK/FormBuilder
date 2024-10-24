@@ -7,7 +7,7 @@ namespace FormBuilder.Core.Models
         public List<string> DependentFieldNames { get; set; } 
 
         public CalculatedField(string name, List<string> dependentFieldNames)
-            : base(name, FieldType.CalculatedField, DataType.Numeric)
+            : base(name, FieldType.CalculatedField)
         {
             DependentFieldNames = dependentFieldNames;
         }

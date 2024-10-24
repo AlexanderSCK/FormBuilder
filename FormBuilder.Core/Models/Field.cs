@@ -10,13 +10,11 @@ namespace FormBuilder.Core.Models
 
         public string Name { get; set; }
         public FieldType Type { get; set; }
-        public DataType DataType { get; set; }
 
-        protected Field(string name, FieldType type, DataType dataType)
+        protected Field(string name, FieldType type)
         {
             Name = name;
             Type = type;
-            DataType = dataType; 
         }
 
         public virtual double? GetValue(Dictionary<string, double> userFieldValues)

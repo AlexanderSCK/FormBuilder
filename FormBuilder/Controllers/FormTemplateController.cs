@@ -1,5 +1,7 @@
 ﻿using FormBuilder.Core;
 using FormBuilder.Dtos;
+using FormBuilder.Exceptions;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FormBuilder.Controllers
@@ -18,6 +20,10 @@ namespace FormBuilder.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateFormTemplate([FromBody] CreateFormTemplateDto formTemplateDto)
         {
+            if (!ModelState.IsValid)
+            {
+                throw new BadRequestException(ModelState);
+            }
             var templateId = await _formService.CreateFormTemplateAsync(formTemplateDto);
             return CreatedAtAction(nameof(GetFormTemplate), new { id = templateId }, new { id = templateId });
         }
@@ -28,7 +34,7 @@ namespace FormBuilder.Controllers
             var formTemplate = await _formService.GetFormTemplateByIdAsync(id);
             if (formTemplate == null)
             {
-                return NotFound();
+                throw new NotFoundException(id);
             }
 
             return Ok(formTemplate);
@@ -40,7 +46,7 @@ namespace FormBuilder.Controllers
             var formInstance = await _formService.GenerateFormInstanceAsync(id, userFieldValues);
             if (formInstance == null)
             {
-                return NotFound();
+                throw new NotFoundException(id);
             }
 
             return Ok(formInstance);
