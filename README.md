@@ -37,14 +37,19 @@ Leveraging Postgre database deployed in AWS
   ]
 }
 ```
-
+- **Response**: (sample):
+```json
+{
+  "id": "f8a4cebf-94d0-4af9-a6df-dbdd95b02745"
+}
+```
 - **Endpoint**: GET /api/FromTemplate/{f8a4cebf-94d0-4af9-a6df-dbdd95b02745}
 - **Description**: Retrieves a specific form template by its ID.
 - **Headers**:
   - `Content-Type`: application/json
+- **Response**: (sample):
 
 ```json
-- **Response** (sample):
 {
   "id": "f8a4cebf-94d0-4af9-a6df-dbdd95b02745",
   "templateName": "Tax Form",
@@ -82,8 +87,10 @@ Leveraging Postgre database deployed in AWS
   "Price": 100,
   "Taxes": 2
 }
+```
 
 - **Response** (sample):
+
 ```json
 {
   "templateName": "Tax Form",
