@@ -3,51 +3,50 @@ using FormBuilder.Core.Models;
 using FormBuilder.Core.Repository;
 using FormBuilder.Dtos;
 
-namespace FormBuilder.Core
+namespace FormBuilder.Core;
+
+public class FormService : IFormService
 {
-    public class FormService : IFormService
+    private readonly IFormRepository _formRepository;
+
+    public FormService(IFormRepository formRepository)
     {
-        private readonly IFormRepository _formRepository;
+        _formRepository = formRepository;
+    }
 
-        public FormService(IFormRepository formRepository)
+    public async Task<Guid> CreateFormTemplateAsync(CreateFormTemplateDto formTemplateDto)
+    {
+        var formTemplate = Helpers.MapDtoToDomain(formTemplateDto);
+        await _formRepository.AddFormTemplateAsync(formTemplate);
+        return formTemplate.Id;
+    }
+
+    public async Task<FormTemplate?> GetFormTemplateByIdAsync(Guid id)
+    {
+        return await _formRepository.GetFormTemplateByIdAsync(id);
+    }
+
+    public async Task<FormInstanceDto> GenerateFormInstanceAsync(Guid templateId, Dictionary<string, double> userFieldValues)
+    {
+        var formTemplate = await _formRepository.GetFormTemplateByIdAsync(templateId);
+        if (formTemplate == null)
         {
-            _formRepository = formRepository;
+            return null;
         }
 
-        public async Task<Guid> CreateFormTemplateAsync(CreateFormTemplateDto formTemplateDto)
+        var formInstance = new FormInstanceDto
         {
-            var formTemplate = Helpers.MapDtoToDomain(formTemplateDto);
-            await _formRepository.AddFormTemplateAsync(formTemplate);
-            return formTemplate.Id;
-        }
+            TemplateName = formTemplate.TemplateName,
+            FieldValues = formTemplate.Fields.ToDictionary(
+                field => field.Name,
+                field => formTemplate.GetFieldValue(userFieldValues, field.Name)
+            )
+        };
 
-        public async Task<FormTemplate?> GetFormTemplateByIdAsync(Guid id)
-        {
-            return await _formRepository.GetFormTemplateByIdAsync(id);
-        }
-
-        public async Task<FormInstanceDto> GenerateFormInstanceAsync(Guid templateId, Dictionary<string, double> userFieldValues)
-        {
-            var formTemplate = await _formRepository.GetFormTemplateByIdAsync(templateId);
-            if (formTemplate == null)
-            {
-                return null;
-            }
-
-            var formInstance = new FormInstanceDto
-            {
-                TemplateName = formTemplate.TemplateName,
-                FieldValues = formTemplate.Fields.ToDictionary(
-                    field => field.Name,
-                    field => formTemplate.GetFieldValue(userFieldValues, field.Name)
-                )
-            };
-
-            return formInstance;
-        }
-        public static double? GetFieldValue(FormTemplate formTemplate, Dictionary<string, double> userFieldValues, string fieldName)
-        {
-            return formTemplate.GetFieldValue(userFieldValues, fieldName);
-        }
+        return formInstance;
+    }
+    public static double? GetFieldValue(FormTemplate formTemplate, Dictionary<string, double> userFieldValues, string fieldName)
+    {
+        return formTemplate.GetFieldValue(userFieldValues, fieldName);
     }
 }

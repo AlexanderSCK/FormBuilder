@@ -1,55 +1,53 @@
 ﻿using FormBuilder.Core;
 using FormBuilder.Dtos;
 using FormBuilder.Exceptions;
-using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FormBuilder.Controllers
+namespace FormBuilder.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class FormTemplateController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class FormTemplateController : ControllerBase
+    private readonly IFormService _formService;
+
+    public FormTemplateController(IFormService formService)
     {
-        private readonly IFormService _formService;
+        _formService = formService;
+    }
 
-        public FormTemplateController(IFormService formService)
+    [HttpPost]
+    public async Task<IActionResult> CreateFormTemplate([FromBody] CreateFormTemplateDto formTemplateDto)
+    {
+        if (!ModelState.IsValid)
         {
-            _formService = formService;
+            throw new BadRequestException(ModelState);
+        }
+        var templateId = await _formService.CreateFormTemplateAsync(formTemplateDto);
+        return CreatedAtAction(nameof(GetFormTemplate), new { id = templateId }, new { id = templateId });
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetFormTemplate(Guid id)
+    {
+        var formTemplate = await _formService.GetFormTemplateByIdAsync(id);
+        if (formTemplate == null)
+        {
+            throw new NotFoundException(id);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateFormTemplate([FromBody] CreateFormTemplateDto formTemplateDto)
+        return Ok(formTemplate);
+    }
+
+    [HttpPost("{id}/generate")]
+    public async Task<IActionResult> GenerateFormInstance(Guid id, [FromBody] Dictionary<string, double> userFieldValues)
+    {
+        var formInstance = await _formService.GenerateFormInstanceAsync(id, userFieldValues);
+        if (formInstance == null)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException(ModelState);
-            }
-            var templateId = await _formService.CreateFormTemplateAsync(formTemplateDto);
-            return CreatedAtAction(nameof(GetFormTemplate), new { id = templateId }, new { id = templateId });
+            throw new NotFoundException(id);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetFormTemplate(Guid id)
-        {
-            var formTemplate = await _formService.GetFormTemplateByIdAsync(id);
-            if (formTemplate == null)
-            {
-                throw new NotFoundException(id);
-            }
-
-            return Ok(formTemplate);
-        }
-
-        [HttpPost("{id}/generate")]
-        public async Task<IActionResult> GenerateFormInstance(Guid id, [FromBody] Dictionary<string, double> userFieldValues)
-        {
-            var formInstance = await _formService.GenerateFormInstanceAsync(id, userFieldValues);
-            if (formInstance == null)
-            {
-                throw new NotFoundException(id);
-            }
-
-            return Ok(formInstance);
-        }
+        return Ok(formInstance);
     }
 }

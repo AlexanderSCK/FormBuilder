@@ -1,8 +1,7 @@
-﻿namespace FormBuilder.Core.Models
+﻿namespace FormBuilder.Core.Models;
+
+public enum FieldType
 {
-    public enum FieldType
-    {
-        UserField,
-        CalculatedField
-    }
+    UserField,
+    CalculatedField
 }

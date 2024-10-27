@@ -1,12 +1,11 @@
 ﻿using FormBuilder.Core.Models;
 using FormBuilder.Dtos;
 
-namespace FormBuilder.Core
+namespace FormBuilder.Core;
+
+public interface IFormService
 {
-    public interface IFormService
-    {
-        Task<Guid> CreateFormTemplateAsync(CreateFormTemplateDto formTemplateDto);
-        Task<FormTemplate?> GetFormTemplateByIdAsync(Guid id);
-        Task<FormInstanceDto> GenerateFormInstanceAsync(Guid templateId, Dictionary<string, double> userFieldValues);
-    }
+    Task<Guid> CreateFormTemplateAsync(CreateFormTemplateDto formTemplateDto);
+    Task<FormTemplate?> GetFormTemplateByIdAsync(Guid id);
+    Task<FormInstanceDto> GenerateFormInstanceAsync(Guid templateId, Dictionary<string, double> userFieldValues);
 }

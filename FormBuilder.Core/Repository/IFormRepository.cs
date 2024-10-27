@@ -1,10 +1,9 @@
 ﻿using FormBuilder.Core.Models;
 
-namespace FormBuilder.Core.Repository
+namespace FormBuilder.Core.Repository;
+
+public interface IFormRepository
 {
-    public interface IFormRepository
-    {
-        Task AddFormTemplateAsync(FormTemplate formTemplate);
-        Task<FormTemplate?> GetFormTemplateByIdAsync(Guid id);
-    }
+    Task AddFormTemplateAsync(FormTemplate formTemplate);
+    Task<FormTemplate?> GetFormTemplateByIdAsync(Guid id);
 }

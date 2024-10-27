@@ -1,7 +1,6 @@
-﻿namespace FormBuilder.Core.Models
+﻿namespace FormBuilder.Core.Models;
+
+public enum DataType
 {
-    public enum DataType
-    {
-        Numeric
-    }
+    Numeric
 }
