@@ -16,6 +16,9 @@ public class FormTemplateController : ControllerBase
         _formService = formService;
     }
 
+    /// <summary>
+    /// Creates a new form template.
+    /// </summary>
     [HttpPost]
     public async Task<IActionResult> CreateFormTemplate([FromBody] CreateFormTemplateDto formTemplateDto)
     {
@@ -27,6 +30,9 @@ public class FormTemplateController : ControllerBase
         return CreatedAtAction(nameof(GetFormTemplate), new { id = templateId }, new { id = templateId });
     }
 
+    /// <summary>
+    /// Retrieves a form template.
+    /// </summary>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetFormTemplate(Guid id)
     {
@@ -39,9 +45,17 @@ public class FormTemplateController : ControllerBase
         return Ok(formTemplate);
     }
 
+    /// <summary>
+    /// Creates a new form instance from a from template and additional user field values.
+    /// </summary>
     [HttpPost("{id}/generate")]
     public async Task<IActionResult> GenerateFormInstance(Guid id, [FromBody] Dictionary<string, double> userFieldValues)
     {
+        if (!ModelState.IsValid)
+        {
+            throw new BadRequestException(ModelState);
+        }
+
         var formInstance = await _formService.GenerateFormInstanceAsync(id, userFieldValues);
         if (formInstance == null)
         {

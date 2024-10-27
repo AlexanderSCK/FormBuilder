@@ -1,7 +1,7 @@
-﻿using FormBuilder.Core.Models;
+﻿using FormBuilder.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FormBuilder.Core.Database;
+namespace FormBuilder.Infrastructure.Database;
 
 public class FormContext : DbContext
 {

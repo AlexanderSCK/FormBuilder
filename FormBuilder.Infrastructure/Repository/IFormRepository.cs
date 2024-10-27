@@ -1,6 +1,6 @@
-﻿using FormBuilder.Core.Models;
+﻿using FormBuilder.Infrastructure.Models;
 
-namespace FormBuilder.Core.Repository;
+namespace FormBuilder.Infrastructure.Repository;
 
 public interface IFormRepository
 {

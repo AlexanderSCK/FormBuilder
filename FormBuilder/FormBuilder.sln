@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormBuilder", "FormBuilder.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormBuilder.Core", "..\FormBuilder.Core\FormBuilder.Core.csproj", "{138827CC-2E75-4C7C-B758-69AEF4E3B518}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormBuilder.Tests", "..\FormBuilder.Tests\FormBuilder.Tests.csproj", "{39097C13-AB5A-46A3-A694-32FAEF51889D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormBuilder.Tests", "..\FormBuilder.Tests\FormBuilder.Tests.csproj", "{39097C13-AB5A-46A3-A694-32FAEF51889D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormBuilder.Infrastructure", "..\FormBuilder.Infrastructure\FormBuilder.Infrastructure.csproj", "{9E730D86-F175-406C-8860-F46040AECC18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{39097C13-AB5A-46A3-A694-32FAEF51889D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39097C13-AB5A-46A3-A694-32FAEF51889D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39097C13-AB5A-46A3-A694-32FAEF51889D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E730D86-F175-406C-8860-F46040AECC18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E730D86-F175-406C-8860-F46040AECC18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E730D86-F175-406C-8860-F46040AECC18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E730D86-F175-406C-8860-F46040AECC18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

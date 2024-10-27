@@ -1,5 +1,5 @@
 ﻿
-namespace FormBuilder.Core.Models;
+namespace FormBuilder.Infrastructure.Models;
 
 public class UserField : Field
 {
@@ -8,11 +8,11 @@ public class UserField : Field
 
     public override double? GetValue(Dictionary<string, double> userFieldValues)
     {
-        if (!userFieldValues.ContainsKey(Name))
+        if (!userFieldValues.TryGetValue(Name, out var value))
         {
             throw new KeyNotFoundException($"User field '{Name}' is missing.");
         }
 
-        return userFieldValues[Name];
+        return value;
     }
 }

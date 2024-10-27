@@ -1,5 +1,5 @@
-﻿using FormBuilder.Core.Models;
-using FormBuilder.Dtos;
+﻿using FormBuilder.Dtos;
+using FormBuilder.Infrastructure.Models;
 
 namespace FormBuilder.Core;
 

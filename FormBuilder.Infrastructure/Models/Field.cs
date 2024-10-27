@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FormBuilder.Core.Models;
+namespace FormBuilder.Infrastructure.Models;
 
 public abstract class Field
 {

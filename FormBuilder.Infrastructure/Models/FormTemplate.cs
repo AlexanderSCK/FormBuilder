@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FormBuilder.Core.Models;
+namespace FormBuilder.Infrastructure.Models;
 
 public class FormTemplate
 {
     [Key]
     public Guid Id { get; set; }
-    public string TemplateName { get; set; }
+
+    public string TemplateName { get; set; } = string.Empty;
     public List<Field> Fields { get; set; }
 
     public FormTemplate() { }

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FormBuilder.Core\FormBuilder.Core.csproj" />
+    <ProjectReference Include="..\FormBuilder.Infrastructure\FormBuilder.Infrastructure.csproj" />
 	  <InternalsVisibleTo Include="FormBuilder.Tests" />
   </ItemGroup>
 

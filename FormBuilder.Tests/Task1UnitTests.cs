@@ -1,5 +1,5 @@
-using FormBuilder.Core.Models;
 using FormBuilder.Core;
+using FormBuilder.Infrastructure.Models;
 
 namespace FormBuilder.Tests;
 

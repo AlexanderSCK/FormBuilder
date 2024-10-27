@@ -1,7 +1,7 @@
 ﻿using FormBuilder.Core.Extensions;
-using FormBuilder.Core.Models;
-using FormBuilder.Core.Repository;
 using FormBuilder.Dtos;
+using FormBuilder.Infrastructure.Models;
+using FormBuilder.Infrastructure.Repository;
 
 namespace FormBuilder.Core;
 

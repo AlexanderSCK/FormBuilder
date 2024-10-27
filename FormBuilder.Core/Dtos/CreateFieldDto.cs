@@ -1,5 +1,5 @@
-﻿using FormBuilder.Core.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using FormBuilder.Infrastructure.Models;
 
 namespace FormBuilder.Dtos;
 

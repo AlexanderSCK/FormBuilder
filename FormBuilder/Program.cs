@@ -1,12 +1,14 @@
 
 
 using FormBuilder.Core.Module;
+using FormBuilder.Infrastructure.Module;
 using FormBuilder.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddCoreModule(builder.Configuration);
+builder.Services.AddCoreModule();
+builder.Services.AddInfrastructureModule(builder.Configuration);
 builder.Services.AddExceptionHandler<NotFoundExceptionHandler>();
 builder.Services.AddExceptionHandler<BadRequestExceptionHandler>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

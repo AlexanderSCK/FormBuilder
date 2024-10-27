@@ -21,4 +21,15 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Database\" />
+    <Folder Include="Migrations\" />
+    <Folder Include="Models\" />
+    <Folder Include="Repository\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FormBuilder.Infrastructure\FormBuilder.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

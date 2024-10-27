@@ -1,7 +1,7 @@
 ﻿using FormBuilder.Dtos;
 using System.Net.Http.Json;
 using System.Net;
-using FormBuilder.Core.Models;
+using FormBuilder.Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 
