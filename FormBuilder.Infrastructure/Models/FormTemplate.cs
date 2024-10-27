@@ -22,7 +22,9 @@ public class FormTemplate
     public double? GetFieldValue(Dictionary<string, double> userFieldValues, string fieldName)
     {
         if (string.IsNullOrWhiteSpace(fieldName))
+        {
             throw new ArgumentException("Field name cannot be null or whitespace.", nameof(fieldName));
+        }
 
         var field = Fields.FirstOrDefault(f => f.Name == fieldName);
         if (field == null)

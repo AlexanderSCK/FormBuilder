@@ -1,9 +1,10 @@
-﻿using FormBuilder.Dtos;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Net;
+using FormBuilder.Core.Dtos;
 using FormBuilder.Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
+using System.Text;
 
 namespace FormBuilder.Tests;
 
@@ -21,7 +22,7 @@ public class IntegrationTests : WebApplicationFactory<Program>
     [TearDown]
     public void TearDown() 
     { 
-        _client?.Dispose(); 
+        _client.Dispose(); 
     }  
 
     [Test]
@@ -151,5 +152,62 @@ public class IntegrationTests : WebApplicationFactory<Program>
 
         // Assert
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+    }
+
+    [Test]
+    public async Task CreateFormTemplate_ShouldReturnBadRequest_WhenCalculatedFieldHasDuplicateDependencies()
+    {
+        // Arrange
+        var formTemplateDto = new CreateFormTemplateDto
+        {
+            TemplateName = "Duplicate Dependencies Form",
+            Fields = new List<CreateFieldDto>
+            {
+                new CreateFieldDto { Name = "Field1", Type = FieldType.UserField },
+                new CreateFieldDto { Name = "Field2", Type = FieldType.UserField },
+                new CreateFieldDto { Name = "CalculatedField1", Type = FieldType.CalculatedField, DependentFieldNames = new List<string> { "Field1", "Field1" } }
+            }
+        };
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/FormTemplate", formTemplateDto);
+
+        // Assert
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        var errorResponse = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        Assert.That(errorResponse, Is.Not.Null);
+
+        var hasDuplicateDependenciesError = errorResponse.Errors
+            .Any(e => e.Key.EndsWith("DependentFieldNames") && e.Value.Contains("Dependent field names must be unique."));
+
+        Assert.That(hasDuplicateDependenciesError, Is.True, "Expected a validation error for duplicate dependent field names.");
+    }
+
+    [Test]
+    public async Task CreateFormTemplate_ShouldReturnBadRequest_WhenUserFieldHasDependencies()
+    {
+        // Arrange
+        var formTemplateDto = new CreateFormTemplateDto
+        {
+            TemplateName = "User Field with Dependencies Form",
+            Fields = new List<CreateFieldDto>
+            {
+                new CreateFieldDto { Name = "Field1", Type = FieldType.UserField, DependentFieldNames = new List<string> { "Field2" } },
+                new CreateFieldDto { Name = "Field2", Type = FieldType.UserField }
+            }
+        };
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/FormTemplate", formTemplateDto);
+
+        // Assert
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        var errorResponse = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        Assert.That(errorResponse, Is.Not.Null);
+
+        var hasUserFieldDependenciesError = errorResponse.Errors
+            .Any(e => e.Key.EndsWith("DependentFieldNames") && e.Value.Contains("User fields cannot have dependent fields."));
+
+        Assert.That(hasUserFieldDependenciesError, Is.True, "Expected a validation error for user fields having dependencies.");
     }
 }

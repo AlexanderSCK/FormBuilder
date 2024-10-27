@@ -1,6 +1,7 @@
 ﻿using FormBuilder.Core;
-using FormBuilder.Dtos;
+using FormBuilder.Core.Dtos;
 using FormBuilder.Exceptions;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FormBuilder.Controllers;
@@ -54,6 +55,16 @@ public class FormTemplateController : ControllerBase
         if (!ModelState.IsValid)
         {
             throw new BadRequestException(ModelState);
+        }
+
+        var invalidFields = userFieldValues
+            .Where(kvp => kvp.Value < 0)
+            .Select(kvp => kvp.Key)
+            .ToList();
+
+        if (invalidFields.Any())
+        {
+            return BadRequest($"Invalid values for fields: {string.Join(", ", invalidFields)}. Values must be non-negative.");
         }
 
         var formInstance = await _formService.GenerateFormInstanceAsync(id, userFieldValues);

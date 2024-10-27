@@ -1,4 +1,4 @@
-﻿using FormBuilder.Dtos;
+﻿using FormBuilder.Core.Dtos;
 using FormBuilder.Infrastructure.Models;
 
 namespace FormBuilder.Core.Extensions;

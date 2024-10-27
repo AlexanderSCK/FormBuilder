@@ -1,4 +1,4 @@
-﻿namespace FormBuilder.Dtos;
+﻿namespace FormBuilder.Core.Dtos;
 
 public class FormInstanceDto
 {

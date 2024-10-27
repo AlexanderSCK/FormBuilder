@@ -17,9 +17,9 @@ public class CalculatedField : Field
 
         foreach (var fieldName in DependentFieldNames)
         {
-            if (userFieldValues.ContainsKey(fieldName))
+            if (userFieldValues.TryGetValue(fieldName, out var value))
             {
-                sum += userFieldValues[fieldName];
+                sum += value;
             }
             else if (calculatedFieldValues.ContainsKey(fieldName) && calculatedFieldValues[fieldName].HasValue)
             {
