@@ -16,7 +16,7 @@ public class FormService : IFormService
 
     public async Task<Guid> CreateFormTemplateAsync(CreateFormTemplateDto formTemplateDto)
     {
-        var formTemplate = Helpers.MapDtoToDomain(formTemplateDto);
+        var formTemplate = formTemplateDto.MapDtoToDomain();
         await _formRepository.AddFormTemplateAsync(formTemplate);
         return formTemplate.Id;
     }

@@ -13,6 +13,11 @@ public class CalculatedField : Field
 
     public override double? GetValue(Dictionary<string, double> userFieldValues, Dictionary<string, double?> calculatedFieldValues)
     {
+        if (calculatedFieldValues == null)
+        {
+            throw new ArgumentNullException(nameof(calculatedFieldValues));
+        }
+
         double sum = 0;
 
         foreach (var fieldName in DependentFieldNames)

@@ -5,7 +5,7 @@ forms by generating instances from templates and user-entered fields.
 
 Built on .NET 8
 
-Leveraging Postgre database deployed in AWS
+Leveraging PostgreSQL database deployed in AWS using EF Core migrations
 
 ## Endpoints
 
@@ -19,20 +19,20 @@ Leveraging Postgre database deployed in AWS
 
 ```json
 {
-  "templateName": "My Form",
+  "templateName": "Test Form",
   "fields": [
     {
       "name": "Price",
       "type": 0  
     },
     {
-      "name": "Taxes",
+      "name": "Tax",
       "type": 0  
     },
     {
       "name": "Total",
       "type": 1,  
-      "dependentFieldNames": ["Price", "Taxes"]
+      "dependentFieldNames": ["Price", "Tax"]
     }
   ]
 }
@@ -40,14 +40,14 @@ Leveraging Postgre database deployed in AWS
 - **Response**: (sample):
 ```json
 {
-  "id": "f8a4cebf-94d0-4af9-a6df-dbdd95b02745"
+  "id": "d6e7d47e-8ec6-4d4b-be11-0ade5e9875c4"
 }
 ```
-- **Endpoint**: GET /api/FromTemplate/{f8a4cebf-94d0-4af9-a6df-dbdd95b02745}
+- **Endpoint**: GET /api/FromTemplate/{id}
 - **Description**: Retrieves a specific form template by its ID.
 - **Headers**:
   - `Content-Type`: application/json
-- **Response**: (sample):
+- **Response**: (sample): (Optional) Use this id for testing: f8a4cebf-94d0-4af9-a6df-dbdd95b02745
 
 ```json
 {
@@ -76,16 +76,24 @@ Leveraging Postgre database deployed in AWS
 }
 ```
 
-- **Endpoint**: POST /api/FromTemplate/{f8a4cebf-94d0-4af9-a6df-dbdd95b02745}/generate
+- **Endpoint**: POST /api/FromTemplate/{id}/generate
 - **Description**: Generates a form instance based on template and the provided values.
 - **Headers**:
   - `Content-Type`: application/json
-- **Request Body** (sample):
+- **Request Body** (sample):  (Optional) Use this id for testing: f8a4cebf-94d0-4af9-a6df-dbdd95b02745
 
 ```json
 {
-  "Price": 100,
-  "Taxes": 2
+  "fields": [
+    {
+      "fieldName": "Price",
+      "value": 100
+    },
+    {
+      "fieldName": "Tax",
+      "value": 2
+    }
+  ]
 }
 ```
 

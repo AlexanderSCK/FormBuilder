@@ -38,9 +38,7 @@ public class FormTemplate
                 
             return field.GetValue(userFieldValues, calculatedFieldValues);
         }
-        else
-        {
-            return field.GetValue(userFieldValues);
-        }
+
+        return field.GetValue(userFieldValues);
     }
 }

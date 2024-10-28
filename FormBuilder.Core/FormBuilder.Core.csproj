@@ -22,10 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repository\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FormBuilder.Infrastructure\FormBuilder.Infrastructure.csproj" />
   </ItemGroup>
 
