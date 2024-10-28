@@ -128,10 +128,13 @@ public class IntegrationTests : WebApplicationFactory<Program>
         var createdForm = await createResponse.Content.ReadFromJsonAsync<Dictionary<string, object>>();
         var formTemplateId = createdForm["id"].ToString();
 
-        var userFieldValues = new Dictionary<string, double>
+        var userFieldValues =  new GenerateFormInstanceRequest
         {
-            { "WorkHours", 40 },
-            { "PerformanceScore", 85 }
+            Fields = new List<FieldValueDto>
+            {
+                new FieldValueDto { FieldName = "WorkHours", Value = 40 },
+                new FieldValueDto { FieldName = "PerformanceScore", Value = 85 }
+            }
         };
 
         // Act
@@ -148,7 +151,15 @@ public class IntegrationTests : WebApplicationFactory<Program>
     {
         // Act
         var id = Guid.NewGuid();
-        var response = await _client.PostAsJsonAsync($"/api/FormTemplate/{id}/generate", new Dictionary<string, double>());
+        var userFieldValues = new GenerateFormInstanceRequest
+        {
+            Fields = new List<FieldValueDto>
+            {
+                new FieldValueDto { FieldName = "WorkHours", Value = 40 },
+                new FieldValueDto { FieldName = "PerformanceScore", Value = 85 }
+            }
+        };
+        var response = await _client.PostAsJsonAsync($"/api/FormTemplate/{id}/generate", userFieldValues);
 
         // Assert
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));

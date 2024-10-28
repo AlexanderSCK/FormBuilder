@@ -50,22 +50,14 @@ public class FormTemplateController : ControllerBase
     /// Creates a new form instance from a from template and additional user field values.
     /// </summary>
     [HttpPost("{id}/generate")]
-    public async Task<IActionResult> GenerateFormInstance(Guid id, [FromBody] Dictionary<string, double> userFieldValues)
+    public async Task<IActionResult> GenerateFormInstance(Guid id, [FromBody] GenerateFormInstanceRequest request)
     {
         if (!ModelState.IsValid)
         {
             throw new BadRequestException(ModelState);
         }
 
-        var invalidFields = userFieldValues
-            .Where(kvp => kvp.Value < 0)
-            .Select(kvp => kvp.Key)
-            .ToList();
-
-        if (invalidFields.Any())
-        {
-            return BadRequest($"Invalid values for fields: {string.Join(", ", invalidFields)}. Values must be non-negative.");
-        }
+        var userFieldValues = request.Fields.ToDictionary(f => f.FieldName, f => f.Value, StringComparer.OrdinalIgnoreCase);
 
         var formInstance = await _formService.GenerateFormInstanceAsync(id, userFieldValues);
         if (formInstance == null)
