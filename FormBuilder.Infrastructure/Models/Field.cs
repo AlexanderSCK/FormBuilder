@@ -18,13 +18,5 @@ public abstract class Field
         Type = type;
     }
 
-    public virtual double? GetValue(Dictionary<string, double> userFieldValues)
-    {
-        return GetValue(userFieldValues, new Dictionary<string, double?>());
-    }
-
-    public virtual double? GetValue(Dictionary<string, double> userFieldValues, Dictionary<string, double?> calculatedFieldValues)
-    {
-        return GetValue(userFieldValues); 
-    }
+    public abstract double GetValue(Dictionary<string, double> userFieldValues, Dictionary<string, double> calculatedFieldValues, FormTemplate formTemplate);
 }

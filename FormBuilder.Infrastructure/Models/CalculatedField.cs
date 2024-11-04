@@ -11,7 +11,7 @@ public class CalculatedField : Field
         DependentFieldNames = dependentFieldNames;
     }
 
-    public override double? GetValue(Dictionary<string, double> userFieldValues, Dictionary<string, double?> calculatedFieldValues)
+    public override double GetValue(Dictionary<string, double> userFieldValues, Dictionary<string, double> calculatedFieldValues, FormTemplate formTemplate)
     {
         if (calculatedFieldValues == null)
         {
@@ -26,9 +26,9 @@ public class CalculatedField : Field
             {
                 sum += value;
             }
-            else if (calculatedFieldValues.ContainsKey(fieldName) && calculatedFieldValues[fieldName].HasValue)
+            else if (calculatedFieldValues.TryGetValue(fieldName, out var calcValue))
             {
-                sum += calculatedFieldValues[fieldName].Value;
+                sum += calcValue;
             }
             else
             {

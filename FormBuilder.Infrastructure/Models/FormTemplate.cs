@@ -19,26 +19,25 @@ public class FormTemplate
         Fields = fields;
     }
 
-    public double? GetFieldValue(Dictionary<string, double> userFieldValues, string fieldName)
+    public double? GetFieldValue(Dictionary<string, double> userFieldValues, string fieldName, Dictionary<string, double> calculatedFieldValues)
     {
-        if (string.IsNullOrWhiteSpace(fieldName))
-        {
-            throw new ArgumentException("Field name cannot be null or whitespace.", nameof(fieldName));
-        }
-
-        var field = Fields.FirstOrDefault(f => f.Name == fieldName);
+        var field = Fields.FirstOrDefault(f => f.Name.Equals(fieldName, StringComparison.OrdinalIgnoreCase));
         if (field == null)
         {
             throw new KeyNotFoundException($"Field '{fieldName}' does not exist in the form template.");
         }
 
-        if (field is CalculatedField)
+        if (calculatedFieldValues.TryGetValue(fieldName, out var fieldValue))
         {
-            var calculatedFieldValues = new Dictionary<string, double?>();
-                
-            return field.GetValue(userFieldValues, calculatedFieldValues);
+            return fieldValue;
         }
 
-        return field.GetValue(userFieldValues);
+        // Calculate the field value
+        var value = field.GetValue(userFieldValues, calculatedFieldValues, this);
+
+        // Store the calculated value
+            calculatedFieldValues[fieldName] = value;
+
+        return value;
     }
 }

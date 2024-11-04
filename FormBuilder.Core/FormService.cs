@@ -34,19 +34,29 @@ public class FormService : IFormService
             return null;
         }
 
+        var calculatedFieldValues = new Dictionary<string, double>();
+        var fieldValues = new Dictionary<string, double>();
+
+        foreach (var field in formTemplate.Fields)
+        {
+            var value = formTemplate.GetFieldValue(userFieldValues, field.Name, calculatedFieldValues);
+            if (value.HasValue)
+            {
+                fieldValues[field.Name] = value.Value;
+            }
+        }
+
         var formInstance = new FormInstanceDto
         {
             TemplateName = formTemplate.TemplateName,
-            FieldValues = formTemplate.Fields.ToDictionary(
-                field => field.Name,
-                field => formTemplate.GetFieldValue(userFieldValues, field.Name)
-            )
+            FieldValues = fieldValues
         };
 
         return formInstance;
     }
     public static double? GetFieldValue(FormTemplate formTemplate, Dictionary<string, double> userFieldValues, string fieldName)
     {
-        return formTemplate.GetFieldValue(userFieldValues, fieldName);
+        var calculatedFieldValues = new Dictionary<string, double>();
+        return formTemplate.GetFieldValue(userFieldValues, fieldName, calculatedFieldValues);
     }
 }
